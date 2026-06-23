@@ -1,0 +1,17 @@
+-- ============================================================
+-- 00_run_all.sql
+-- Spotify Track Positioning Analytics
+-- MySQL 8.0 / MySQL Workbench
+-- ============================================================
+--
+-- Run order:
+--   1. Open and run sql/01_schema.sql.
+--   2. Open and run sql/02_import_raw_data.sql.
+--      Expected final result: raw_rows_after_insert = 114000.
+--   3. Open and run sql/03_data.sql.
+--   4. Open and run sql/04_eda.sql.
+--
+-- Notes:
+--   The raw source rows are loaded with generated INSERT statements in
+--   sql/02_import_raw_data.sql.
+-- ============================================================
