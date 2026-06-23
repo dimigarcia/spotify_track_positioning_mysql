@@ -1,0 +1,16 @@
+# GitHub Linguist configuration
+# Keep generated/imported support files from dominating the repository language statistics.
+
+# The raw-data INSERT script is generated from the CSV by tools/generate_raw_import_sql.py.
+# It is executable SQL, but it is very large and generated, so it should not dominate diffs or language stats.
+sql/02_import_raw_data.sql linguist-generated=true
+
+# The source CSV is data, not source code.
+data/raw/spotify_tracks.csv linguist-vendored=true
+
+# The Python script is a small utility used to generate the SQL import file.
+# It should not make the repository appear to be a Python project.
+tools/generate_raw_import_sql.py linguist-generated=true
+
+# Treat SQL scripts explicitly as SQL.
+*.sql linguist-language=SQL
