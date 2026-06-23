@@ -114,7 +114,7 @@ The project uses transactions in `03_data.sql`:
 spotify_track_positioning_mysql/
 ├── README.md
 ├── .gitignore
-├── _private_presentation_notes.md
+├── .gitattributes
 ├── data/
 │   └── raw/
 │       ├── spotify_tracks.csv
@@ -122,9 +122,9 @@ spotify_track_positioning_mysql/
 ├── docs/
 │   ├── analysis_results.md
 │   ├── data_quality_and_model_decisions.md
-│   ├── model_diagram_placeholder.md
 │   ├── model_mermaid.md
-│   └── requirements_checklist.md
+│   ├── requirements_checklist.md
+│   └── workbench_model_diagram.png
 ├── tools/
 │   └── generate_raw_import_sql.py
 └── sql/
@@ -133,9 +133,7 @@ spotify_track_positioning_mysql/
     ├── 02_import_raw_data.sql
     ├── 03_data.sql
     └── 04_eda.sql
-```
-
-`_private_presentation_notes.md` is ignored by Git by default.
+`````
 
 ## Execution in MySQL Workbench
 

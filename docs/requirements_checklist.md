@@ -26,5 +26,5 @@
 | Transactions | `03_data.sql` uses `START TRANSACTION`, `COMMIT`, and `ROLLBACK`. |
 | Index | `idx_fact_selected_popularity`, `idx_bridge_genre`, `idx_fact_audio_profile`, `idx_bridge_artist`. |
 | Function | `fn_popularity_band`, `fn_playlist_strategy`. |
-| Model diagram | Placeholder at `docs/workbench_model_diagram.png`; Mermaid version in `docs/model_mermaid.md`. |
+| Model diagram | Screenshot in `docs/workbench_model_diagram.png`; Mermaid version in `docs/model_mermaid.md`. |
 | README | `README.md`. |
