@@ -50,6 +50,12 @@ The fact table is track-level because repeated `track_id` rows were audited. Aft
 
 This means global popularity rankings are track-level rankings: when the EDA uses `fact_track_metrics` or `vw_track_profile`, each Spotify track appears at most once. Genre analysis still uses `bridge_track_genre`, so a track that belongs to multiple genres can contribute once to each relevant genre-level summary.
 
+A fuller decision log for the duplicate checks, repeated-track audit, popularity aggregation, album-key choice and bridge-table structure is provided in:
+
+```text
+docs/data_quality_and_model_decisions.md
+```
+
 ## Tables
 
 ### Raw / staging
@@ -94,6 +100,8 @@ The SQL project explicitly checks and documents:
 - Missing artist links after bridge-table creation.
 - Whether tracks assigned to more genre labels differ in selected popularity.
 
+The detailed reasoning behind these checks and the resulting modelling choices is documented in `docs/data_quality_and_model_decisions.md`.
+
 The project uses transactions in `03_data.sql`:
 
 - `START TRANSACTION` + `COMMIT` for cleaning missing descriptive values.
@@ -113,6 +121,7 @@ spotify_track_positioning_mysql/
 │       └── README.md
 ├── docs/
 │   ├── analysis_results.md
+│   ├── data_quality_and_model_decisions.md
 │   ├── model_diagram_placeholder.md
 │   ├── model_mermaid.md
 │   └── requirements_checklist.md
@@ -184,14 +193,13 @@ This produces the data-quality checks and the 12 analytical EDA queries.
 
 ## Model diagram
 
-MySQL Workbench EER/model screenshot:
+MySQL Workbench EER/model screenshot from
 
-![MySQL Workbench EER model diagram](docs/workbench_model_diagram.png)
-
-Image source:
 ```text
 docs/workbench_model_diagram.png
 ```
+
+![MySQL Workbench EER model diagram](docs/workbench_model_diagram.png)
 
 A Mermaid text version of the model is provided in:
 
@@ -207,17 +215,22 @@ The observed results are documented in:
 docs/analysis_results.md
 ```
 
-Key patterns include:
+The modelling decisions behind those results are documented in:
 
-- The raw source contains 114,000 rows.
-- Redundant duplicate `track_id + genre` rows are detected and removed.
-- Repeated tracks across genres do not differ in audio attributes or metadata after duplicate cleanup.
-- Popularity differences across repeated tracks are rare and usually small relative to the 0-100 scale.
-- Selected popularity is defined as the maximum observed popularity for each track, so global popularity rankings are not duplicated by genre relations.
-- Shoegaze is not available as a source genre label.
-- Within selected genres, audio-feature correlations with selected popularity are exploratory and moderate rather than deterministic.
-- Genre typicality has different relationships with popularity depending on genre: in some genres more typical tracks are more popular, while in others more distinctive tracks perform better.
-- Tracks with two or three genre labels have higher average selected popularity than tracks with only one genre label, but very high genre counts are rare and should not be over-interpreted.
+```text
+docs/data_quality_and_model_decisions.md
+```
+
+### Key EDA insights
+
+- The highest global track-level popularity rankings are dominated by mainstream pop, dance, latin and hip-hop crossover tracks. The top results include `Unholy` by Sam Smith and Kim Petras, `Quevedo: Bzrp Music Sessions, Vol. 52`, `I'm Good (Blue)`, `La Bachata`, and several Bad Bunny tracks.
+- Among artists with at least five tracks in the dataset, the strongest average selected-popularity results include Olivia Rodrigo, One Direction, Lil Nas X, Måneskin and Mora. At album-credit level, `Un Verano Sin Ti` by Bad Bunny and `SOUR` by Olivia Rodrigo are among the clearest high-performing album contexts.
+- The selected genre sample shows clear differences in average selected popularity. `pop-film`, `k-pop`, `grunge`, `electronic` and `ambient` rank relatively high among the selected genres, while `classical`, `idm` and `breakbeat` are much lower in this dataset. `shoegaze` is not available as a source genre label.
+- The strongest audio-feature associations differ by genre. For example, `world-music` has a negative association between instrumentalness and selected popularity, while `classical` and `j-pop` show stronger positive associations with energy. `k-pop` is more closely associated with loudness, and `funk` with danceability.
+- The typicality analysis suggests different positioning patterns across genres. `world-music`, `pagode`, `dub` and `pop-film` show positive typicality-popularity associations, while `classical`, `jazz`, `reggae`, `opera` and `edm` show negative associations. This suggests that some genre contexts reward closeness to the genre profile, while others appear to reward more distinctive tracks.
+- The discovery-candidate query surfaces tracks with strong danceability, energy and valence but below-average popularity within their genre. Examples include `Giant` by The Chemical Brothers, `Daft Punk Is Playing at My House` by LCD Soundsystem, and several breakbeat, synth-pop, funk and trip-hop tracks with high playlist-momentum scores.
+- Explicit-content patterns differ sharply by genre. In `funk`, `indie` and `indie-pop`, explicit tracks have higher average selected popularity than non-explicit tracks. In `hip-hop` and `k-pop`, the opposite pattern appears in this dataset, with non-explicit tracks showing higher average selected popularity.
+- Tracks assigned to two genre labels have higher average selected popularity than one-genre tracks. Two-genre tracks average around 39.06 compared with 32.46 for one-genre tracks, suggesting that moderate cross-genre positioning is associated with broader catalogue reach in this dataset.
 
 ## Limitations
 
