@@ -123,7 +123,6 @@ spotify_track_positioning_mysql/
 │   ├── analysis_results.md
 │   ├── data_quality_and_model_decisions.md
 │   ├── model_mermaid.md
-│   ├── requirements_checklist.md
 │   └── workbench_model_diagram.png
 ├── tools/
 │   └── generate_raw_import_sql.py
